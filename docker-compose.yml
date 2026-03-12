@@ -1,0 +1,12 @@
+services:
+  ahi:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      - AHI_ADMIN_PASSWORD=admin       # change this before exposing publicly
+      - AHI_SECRET=change-me-in-production
+      - AHI_DATA_DIR=/data
+    restart: unless-stopped

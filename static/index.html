@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent-Human Interface</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── Login modal ──────────────────────────────────────────────── -->
+<div id="login-modal" class="modal">
+  <div class="modal-box">
+    <h2>🔗 Agent-Human Interface</h2>
+    <p class="sub">The structured exchange layer between autonomous agents and human operators.</p>
+    <input type="password" id="pw" placeholder="Admin password" autocomplete="current-password" />
+    <button onclick="login()">Sign In</button>
+    <p id="login-err" class="msg err hidden">Wrong password</p>
+  </div>
+</div>
+
+<!-- ── Main app ──────────────────────────────────────────────────── -->
+<div id="app" class="hidden">
+
+  <header>
+    <span class="brand">🔗 Agent-Human Interface</span>
+    <div class="controls">
+      <select id="filter-type" onchange="renderEntries()">
+        <option value="">All types</option>
+        <option value="observation">Observation</option>
+        <option value="recommendation">Recommendation</option>
+        <option value="alert">Alert</option>
+        <option value="acknowledgement">Acknowledgement</option>
+        <option value="order">Order</option>
+        <option value="approval">Approval</option>
+        <option value="override">Override</option>
+      </select>
+      <select id="filter-agent" onchange="renderEntries()">
+        <option value="">All agents</option>
+      </select>
+      <div id="dot" class="dot" title="disconnected"></div>
+      <button onclick="exportLog()">Export JSON</button>
+      <button onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- log -->
+    <section id="log-panel">
+      <div class="log-head">
+        <span class="log-head-title">Exchange Log</span>
+        <span id="entry-count" style="font-size:11px;color:var(--muted)"></span>
+      </div>
+      <div id="entries">
+        <div class="empty">No entries yet.<br>Agents push via <code>POST /exchange</code>.<br>Humans compose in the panel →</div>
+      </div>
+    </section>
+
+    <!-- compose -->
+    <aside id="compose-panel">
+      <p class="compose-title">Compose</p>
+
+      <div class="field">
+        <label>Type</label>
+        <select id="c-type" onchange="onTypeChange()">
+          <option value="order">📋 Order</option>
+          <option value="approval">✓ Approval</option>
+          <option value="override">⚡ Override</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>To</label>
+        <select id="c-to"></select>
+      </div>
+
+      <div class="field">
+        <label>Content</label>
+        <textarea id="c-content" rows="5" placeholder="Write a directive for the agent in plain English…"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Context <span style="font-weight:400">(JSON, optional)</span></label>
+        <textarea id="c-ctx" rows="2" placeholder='{"priority": "high"}'></textarea>
+        <span class="field-hint">Structured metadata attached to the entry.</span>
+      </div>
+
+      <div class="field">
+        <label>ID <span style="font-weight:400">(auto-generated if blank)</span></label>
+        <input type="text" id="c-id" placeholder="human-20260312-001" />
+      </div>
+
+      <button id="submit-btn" onclick="submitEntry()">Submit Order</button>
+      <p id="submit-msg" class="msg"></p>
+
+      <p class="field-hint" style="margin-top:4px">
+        Submitted entries appear as <code>from: human</code>.<br>
+        Only orders, approvals, and overrides are human-writable.
+      </p>
+    </aside>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
