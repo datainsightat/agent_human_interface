@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent-Human Interface — Live Simulation · datainsight.at</title>
+  <meta name="description" content="Interactive simulation of the Agent-Human Interface exchange layer — the shared, append-only log that connects AI agents and humans in the Harlie Collective.">
+  <script>(function(){var t=localStorage.getItem('de_toolkit_theme')||'blue';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <link rel="stylesheet" href="../../shared-theme.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="../../img/datainsight_logo_v01_400.png">
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────── -->
+<header id="app-header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon"><img src="../../img/datainsight_logo_v01_400.png" alt="DataInsight.at" style="height:32px;width:auto;display:block;"></div>
+      <div>
+        <h1>Agent-Human Interface</h1>
+        <p class="subtitle">datainsight.at — Live Exchange Layer Simulation</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="live-badge"><span class="live-dot"></span>Live</span>
+      <a href="../../index.html" class="back-link">← datainsight.at</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Intro ───────────────────────────────────────────────────── -->
+<div class="intro-banner">
+  <div class="intro-inner">
+    <span class="intro-tag">Concept</span>
+    <div class="intro-text">
+      <h2>The shared log between agents and humans</h2>
+      <p>
+        Agents write <strong>observations, recommendations, and alerts</strong> upward (↑).
+        Humans write <strong>orders, approvals, and overrides</strong> downward (↓).
+        Every entry is typed, schema-enforced, and append-only — so nothing can be silently rewritten.
+        Use the scenario below to watch a full cycle play out, or compose your own entries.
+      </p>
+      <div class="intro-props">
+        <span class="intro-prop">📌 Append-only</span>
+        <span class="intro-prop">🏷 Schema-enforced</span>
+        <span class="intro-prop">🔍 Queryable audit trail</span>
+        <span class="intro-prop">↕ Bidirectional</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Mobile Tabs ─────────────────────────────────────────────── -->
+<nav class="mobile-tabs">
+  <button class="mobile-tab" data-tab="agent">↑ Agent</button>
+  <button class="mobile-tab active" data-tab="log">Exchange Log</button>
+  <button class="mobile-tab" data-tab="human">↓ Human</button>
+</nav>
+
+<!-- ── Main 3-Column Grid ──────────────────────────────────────── -->
+<div class="app-grid">
+
+  <!-- LEFT: Agent Composer ─────────────────────────────────────── -->
+  <aside class="panel panel--agent">
+    <div class="panel-header">
+      <div class="panel-label">↑ Agents Write Up</div>
+      <div class="panel-title">Agent Composer</div>
+      <div class="panel-desc">Simulate an agent writing to the exchange layer.</div>
+    </div>
+    <div class="panel-body">
+      <form id="agent-form" autocomplete="off">
+
+        <div class="field">
+          <label for="agent-role">Agent role</label>
+          <select id="agent-role">
+            <option value="scout">Scout</option>
+            <option value="market_watcher">Market Watcher</option>
+            <option value="project_architect">Project Architect</option>
+            <option value="template_engineer">Template Engineer</option>
+            <option value="pulse_writer">Pulse Writer</option>
+            <option value="publisher">Publisher</option>
+            <option value="harlie">H.A.R.L.I.E.</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Entry type</label>
+          <div class="type-grid">
+            <label class="type-option selected" style="color:var(--c-observation)">
+              <input type="radio" name="agent-type" value="observation" checked>
+              <span class="type-dot"></span> Observation
+            </label>
+            <label class="type-option" style="color:var(--c-recommendation)">
+              <input type="radio" name="agent-type" value="recommendation">
+              <span class="type-dot"></span> Recommendation
+            </label>
+            <label class="type-option" style="color:var(--c-alert)">
+              <input type="radio" name="agent-type" value="alert">
+              <span class="type-dot"></span> Alert
+            </label>
+            <label class="type-option" style="color:var(--c-acknowledgement)">
+              <input type="radio" name="agent-type" value="acknowledgement">
+              <span class="type-dot"></span> Acknowledgement
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="agent-to">To</label>
+          <select id="agent-to">
+            <option value="project_architect">project_architect</option>
+            <option value="all">all</option>
+            <option value="human">human</option>
+            <option value="scout">scout</option>
+            <option value="market_watcher">market_watcher</option>
+            <option value="pulse_writer">pulse_writer</option>
+            <option value="template_engineer">template_engineer</option>
+            <option value="publisher">publisher</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="agent-content">Content</label>
+          <textarea id="agent-content" placeholder="What did you find? What do you recommend?"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="agent-context">Context <span style="font-weight:400;color:var(--text3)">(optional JSON or note)</span></label>
+          <textarea id="agent-context" style="min-height:52px" placeholder='{"priority":"high","tool":"duckdb"}'></textarea>
+          <div class="field-hint">Free text is stored as <code>{"note": "..."}</code></div>
+        </div>
+
+        <button type="submit" class="btn-write btn-write--agent">↑ Write to Exchange</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- CENTER: Exchange Log ─────────────────────────────────────── -->
+  <div class="log-panel">
+    <div class="log-panel-header">
+      <div class="log-panel-title">
+        <span class="log-icon">📋</span>
+        exchange.json
+      </div>
+      <div class="log-controls">
+        <select class="log-filter" id="log-filter">
+          <option value="all">All types</option>
+          <option value="observation">Observations</option>
+          <option value="recommendation">Recommendations</option>
+          <option value="alert">Alerts</option>
+          <option value="acknowledgement">Acknowledgements</option>
+          <option value="order">Orders</option>
+          <option value="approval">Approvals</option>
+          <option value="override">Overrides</option>
+        </select>
+        <button class="btn-clear" id="btn-clear">Reset</button>
+      </div>
+    </div>
+    <div class="log-meta">
+      <span class="log-count" id="log-count">1 entry</span>
+    </div>
+    <div id="exchange-log"></div>
+  </div>
+
+  <!-- RIGHT: Human Composer ───────────────────────────────────── -->
+  <aside class="panel panel--human">
+    <div class="panel-header">
+      <div class="panel-label">↓ Humans Write Down</div>
+      <div class="panel-title">Human Composer</div>
+      <div class="panel-desc">Write an order, approval, or override — no code needed.</div>
+    </div>
+    <div class="panel-body">
+      <form id="human-form" autocomplete="off">
+
+        <div class="field">
+          <label>Entry type</label>
+          <div class="type-grid">
+            <label class="type-option selected" style="color:var(--c-order)">
+              <input type="radio" name="human-type" value="order" checked>
+              <span class="type-dot"></span> Order
+            </label>
+            <label class="type-option" style="color:var(--c-approval)">
+              <input type="radio" name="human-type" value="approval">
+              <span class="type-dot"></span> Approval
+            </label>
+            <label class="type-option" style="color:var(--c-override)">
+              <input type="radio" name="human-type" value="override">
+              <span class="type-dot"></span> Override
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="human-to">To</label>
+          <select id="human-to">
+            <option value="project_architect">project_architect</option>
+            <option value="scout">scout</option>
+            <option value="market_watcher">market_watcher</option>
+            <option value="pulse_writer">pulse_writer</option>
+            <option value="template_engineer">template_engineer</option>
+            <option value="publisher">publisher</option>
+            <option value="all">all</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="human-content">Content</label>
+          <textarea id="human-content" placeholder="What do you want the agent to do? Be specific."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="human-priority">Priority</label>
+          <select id="human-priority">
+            <option value="high">High</option>
+            <option value="medium" selected>Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-write btn-write--human">↓ Write to Exchange</button>
+      </form>
+
+      <!-- How it works box -->
+      <div style="margin-top:18px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm)">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px">How it works</div>
+        <p style="font-size:.75rem;color:var(--text2);line-height:1.55">
+          Humans append entries to <code>exchange.json</code> directly. No code changes, no agent prompt edits.
+          Agents read <code>pending</code> entries addressed to them before each run and act accordingly.
+        </p>
+        <p style="font-size:.75rem;color:var(--text2);line-height:1.55;margin-top:6px">
+          The log is <strong>append-only</strong> — your entry cannot be silently removed by an agent, and you cannot erase an agent's finding.
+        </p>
+      </div>
+    </div>
+  </aside>
+
+</div><!-- end app-grid -->
+
+<!-- ── Scenario Walkthrough ────────────────────────────────────── -->
+<div class="scenario-section">
+  <div class="scenario-panel">
+    <div class="scenario-header">
+      <div class="scenario-title-group">
+        <span class="scenario-label">Guided Scenario</span>
+        <span class="scenario-title">DuckDB Lakehouse — a full cycle</span>
+      </div>
+      <div class="scenario-controls">
+        <button class="btn-scenario btn-scenario--play" id="btn-scenario-start">▶ Run Scenario</button>
+        <div id="scenario-nav" style="display:none;align-items:center;gap:8px">
+          <button class="btn-scenario btn-scenario--nav" id="btn-scenario-prev" disabled>← Prev</button>
+          <span id="scenario-counter" style="font-size:.75rem;color:var(--text3);white-space:nowrap"></span>
+          <button class="btn-scenario btn-scenario--nav" id="btn-scenario-next">Next →</button>
+          <button class="btn-scenario btn-scenario--reset" id="btn-scenario-reset">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-body">
+      <div class="scenario-idle" id="scenario-idle">
+        Click <strong>Run Scenario</strong> to watch Scout, Market Watcher, a human, Project Architect, and Publisher coordinate a full cycle through the exchange layer.
+      </div>
+
+      <div class="scenario-step-display" id="scenario-step-display">
+        <div class="scenario-step-info">
+          <div class="step-counter" id="scenario-counter"></div>
+          <div class="step-heading" id="scenario-step-title"></div>
+          <p class="step-desc" id="scenario-step-desc"></p>
+          <div class="step-dots" id="step-dots"></div>
+        </div>
+        <div class="scenario-entry-preview" id="scenario-entry-preview"></div>
+      </div>
+
+      <div class="scenario-complete" id="scenario-complete">
+        ✅ Cycle complete. Every action is now in the exchange log — queryable, traceable, permanent. The commit included <code>exchange.json</code> as a data artifact alongside the case study files.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Legend ──────────────────────────────────────────────────── -->
+<div class="legend-section">
+  <div class="legend-inner">
+    <div class="legend-title">Entry type reference</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#6366f1"></span>
+        <span class="legend-arrow">↑</span>
+        <strong>Observation</strong> — agent reports a finding, no action implied
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#f59e0b"></span>
+        <span class="legend-arrow">↑</span>
+        <strong>Recommendation</strong> — agent suggests an action to a specific agent
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#ef4444"></span>
+        <span class="legend-arrow">↑</span>
+        <strong>Alert</strong> — urgent issue requiring immediate attention
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#22c55e"></span>
+        <span class="legend-arrow">↕</span>
+        <strong>Acknowledgement</strong> — confirms receipt and records action taken
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#a855f7"></span>
+        <span class="legend-arrow">↓</span>
+        <strong>Order</strong> — human directive to an agent
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#06b6d4"></span>
+        <span class="legend-arrow">↓</span>
+        <strong>Approval</strong> — human confirms a recommendation should be acted on
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#f97316"></span>
+        <span class="legend-arrow">↓</span>
+        <strong>Override</strong> — human cancels or modifies a planned agent action
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
