@@ -536,42 +536,63 @@ function flash(id, msg) {
 }
 
 // ── Load H.A.R.L.I.E. exchange.json ──────────────────────────────
+function loadHarlieLog(onSuccess, onError) {
+  return fetch('../../agents/exchange.json')
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(data => {
+      const loaded = Array.isArray(data) ? data : (data.entries || []);
+      if (!loaded.length) throw new Error('No entries found');
+      entries = loaded;
+      scenarioStep = -1;
+      scenarioActive = false;
+      resetScenarioUI();
+      renderLog();
+      if (onSuccess) onSuccess(loaded.length);
+    })
+    .catch(err => {
+      if (onError) onError(err);
+    });
+}
+
 function initLoadHarlie() {
   const btn = document.getElementById('btn-load-harlie');
   if (!btn) return;
+
+  // Auto-load on page open — silently falls back to INITIAL_ENTRIES if unavailable
+  loadHarlieLog(
+    count => {
+      btn.textContent = '✅ H.A.R.L.I.E. Log Loaded';
+      btn.style.color = 'var(--c-acknowledgement)';
+      setTimeout(() => { btn.textContent = '🌀 Reload H.A.R.L.I.E. Log'; btn.style.color = ''; }, 3000);
+    }
+  );
+
   btn.addEventListener('click', () => {
     btn.textContent = '⏳ Loading…';
     btn.disabled = true;
-    fetch('../../agents/exchange.json')
-      .then(r => {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(data => {
-        const loaded = Array.isArray(data) ? data : (data.entries || []);
-        if (!loaded.length) throw new Error('No entries found');
-        entries = loaded;
-        scenarioStep = -1;
-        scenarioActive = false;
-        resetScenarioUI();
-        renderLog();
+    loadHarlieLog(
+      () => {
         btn.textContent = '✅ H.A.R.L.I.E. Log Loaded';
         btn.style.color = 'var(--c-acknowledgement)';
         setTimeout(() => {
-          btn.textContent = '🌀 Load H.A.R.L.I.E. Log';
+          btn.textContent = '🌀 Reload H.A.R.L.I.E. Log';
           btn.style.color = '';
           btn.disabled = false;
         }, 3000);
-      })
-      .catch(err => {
+      },
+      err => {
         btn.textContent = '❌ ' + err.message;
         btn.style.color = 'var(--c-alert)';
         setTimeout(() => {
-          btn.textContent = '🌀 Load H.A.R.L.I.E. Log';
+          btn.textContent = '🌀 Reload H.A.R.L.I.E. Log';
           btn.style.color = '';
           btn.disabled = false;
         }, 3000);
-      });
+      }
+    );
   });
 }
 
