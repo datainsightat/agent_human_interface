@@ -28,76 +28,132 @@ const INITIAL_ENTRIES = [
   }
 ];
 
-// ── Scenario definition ───────────────────────────────────────────
+// ── Scenario definition — H.A.R.L.I.E. BitNet Cycle (2026-03-17) ─
 const SCENARIO_STEPS = [
   {
-    title: 'Scout discovers a gap',
-    description: 'Scout researched the latest DuckDB release. Version 1.5 introduced the VARIANT type — a major new capability with no case study on datainsight.at. Scout writes a recommendation to Project Architect, including the suggested slug and priority.',
+    title: 'Scout: Phase B discovers BitNet',
+    description: 'Scout runs Phase B registry maintenance and detects Microsoft BitNet — 35k+ GitHub stars, +6k/week, enables 100B LLM inference on a single CPU. No case study covers CPU-native LLM inference. Scout writes three AHIL recommendations in parallel: one to Project Architect, one to Template Engineer, one to Pulse Writer.',
     entry: {
-      id: 'scout-20260311-001',
+      id: 'scout-20260317-001',
       type: 'recommendation',
       from: 'scout',
       to: 'project_architect',
-      date: '2026-03-11',
+      date: '2026-03-17',
       status: 'pending',
-      content: 'DuckDB 1.5 VARIANT type is a major new capability with no case study. Recommend: "DuckDB Lakehouse" case covering VARIANT, DuckLake catalog, and geospatial types.',
-      context: { trigger_tool: 'duckdb', trigger_version: '1.5.0', suggested_slug: 'duckdb-lakehouse', priority: 'high' }
+      content: 'Microsoft BitNet b1.58 (35k+ stars, +6k/week) enables 100B LLM inference on a single CPU — no GPU required. No case study covers CPU-native LLM inference for DSGVO-constrained DE teams. Recommend Case #020: Local LLM Inference Pipeline using BitNet + Airflow 3.1 + DuckDB.',
+      context: { trigger_tool: 'microsoft-bitnet', suggested_slug: 'local-llm-inference-pipeline', suggested_title: 'Local LLM Inference Pipeline — BitNet on CPU', priority: 'high' }
     }
   },
   {
-    title: 'Market Watcher independently confirms',
-    description: 'Market Watcher added DuckDB 1.5 to market.json as a highlighted tool. It checks for a related case study — none exists. It writes a second recommendation, independently reaching the same conclusion as Scout.',
+    title: 'Scout → Template Engineer: new template needed',
+    description: 'Scout also flags that no prompt template covers local/on-premise LLM inference workflows. It sends a parallel recommendation to Template Engineer.',
     entry: {
-      id: 'market-20260311-001',
+      id: 'scout-20260317-002',
       type: 'recommendation',
-      from: 'market_watcher',
-      to: 'project_architect',
-      date: '2026-03-11',
+      from: 'scout',
+      to: 'template_engineer',
+      date: '2026-03-17',
       status: 'pending',
-      content: 'Added DuckDB 1.5 to market.json (highlighted, Analytics Database). No case study exists for this tool category. Recommend a DuckDB-focused end-to-end case study.',
-      context: { trigger_tool: 'duckdb', suggested_slug: 'duckdb-lakehouse', priority: 'high' }
+      content: 'BitNet trending — CPU-native LLM inference is a new workflow pattern with no existing template. Recommend adding a template for local LLM integration in data pipelines.',
+      context: { trigger_tool: 'microsoft-bitnet', suggested_mode: 'agent-engineering', priority: 'medium' }
     }
   },
   {
-    title: 'Human writes an order',
-    description: 'You read the exchange log and see two independent recommendations pointing to the same gap. You write an order — no code needed, just append a structured entry to exchange.json — making this the top priority this cycle.',
+    title: 'Scout → Pulse Writer: tool spotlight candidate',
+    description: 'Scout identifies BitNet as this cycle\'s strongest Tool Spotlight candidate — concrete numbers (100B model, single CPU, 55–82% energy reduction) make it immediately actionable for DACH/compliance-constrained teams.',
     entry: {
-      id: 'human-20260311-001',
-      type: 'order',
-      from: 'human',
-      to: 'project_architect',
-      date: '2026-03-11',
+      id: 'scout-20260317-003',
+      type: 'recommendation',
+      from: 'scout',
+      to: 'pulse_writer',
+      date: '2026-03-17',
       status: 'pending',
-      content: 'Prioritise the DuckDB Lakehouse case study over any other pending recommendations this cycle. Include VARIANT type, DuckLake catalog integration, and a complete end-to-end pipeline example.',
-      context: { priority: 'high', deadline: 'this_cycle' }
+      content: 'BitNet\'s trajectory (+6k stars/week) and concrete numbers (100B model, single CPU, no GPU) make it the strongest Tool Spotlight this cycle for DACH/compliance-constrained DE teams. Recommend pulse entry.',
+      context: { trigger_tool: 'microsoft-bitnet', suggested_tag: 'Tool Spotlight', priority: 'high' }
     }
   },
   {
-    title: 'Project Architect acts on the exchange',
-    description: 'Project Architect reads all pending entries addressed to it. It finds 2 recommendations + 1 order, all converging on the same case study. It creates the page, adds the project card, then writes an acknowledgement recording the action.',
+    title: 'Template Engineer acts in parallel',
+    description: 'Template Engineer reads its pending recommendations, adds a CrewAI Plan-Execute template and a Local LLM Inference template to the library. Templates now at 136.',
     entry: {
-      id: 'architect-20260311-001',
+      id: 'template_engineer-20260317-001',
+      type: 'acknowledgement',
+      from: 'template_engineer',
+      to: 'scout',
+      date: '2026-03-17',
+      status: 'acted',
+      content: 'Added 3 templates: CrewAI Plan-Execute Agent Pipeline, Agent Context Database Design, AI-Assisted Pipeline Documentation Generator. Total: 136 templates. templates.js and templates.json updated.',
+      context: { ref: 'scout-20260317-002', templates_added: 3, total: 136 }
+    }
+  },
+  {
+    title: 'Pulse Writer acts in parallel',
+    description: 'Pulse Writer writes the BitNet Tool Spotlight entry and rebuilds pulse.json with the 3 most recent entries.',
+    entry: {
+      id: 'pulse_writer-20260317-001',
+      type: 'acknowledgement',
+      from: 'pulse_writer',
+      to: 'scout',
+      date: '2026-03-17',
+      status: 'acted',
+      content: 'Published pulse entry: "BitNet: Run a 100B LLM on a Single CPU — 1-Bit Inference Is Here" (Tool Spotlight). pulse.json rebuilt with 3 most recent entries.',
+      context: { ref: 'scout-20260317-003', slug: '2026-03-17-bitnet-1bit-cpu-inference', tag: 'Tool Spotlight' }
+    }
+  },
+  {
+    title: 'Project Architect builds Case #020',
+    description: 'Project Architect acts on Scout\'s recommendation — oldest-pending first. Creates the BitNet case study page and adds it to the project grid.',
+    entry: {
+      id: 'project_architect-20260317-001',
       type: 'acknowledgement',
       from: 'project_architect',
-      to: 'all',
-      date: '2026-03-11',
+      to: 'scout',
+      date: '2026-03-17',
       status: 'acted',
-      content: 'Created projects/duckdb-lakehouse/index.html as Case #014. Added project card to index.html. Acted on all 3 pending entries addressed to project_architect.',
-      context: { refs: ['scout-20260311-001', 'market-20260311-001', 'human-20260311-001'], slug: 'duckdb-lakehouse', case_number: 14 }
+      content: 'Created projects/local-llm-inference-pipeline/index.html as Case #020. Project card added to index.html. Pipeline card shows DuckDB → Airflow 3.1 → dbt → Great Expectations → BitNet Agent → FastAPI.',
+      context: { ref: 'scout-20260317-001', slug: 'local-llm-inference-pipeline', case_number: '020' }
+    }
+  },
+  {
+    title: 'ADPL Translator generates pipeline files',
+    description: 'ADPL Translator pulls the spec (still v1.1, no change), then generates pipeline.adpl files for all 3 new case studies. It writes an acknowledgement to H.A.R.L.I.E. confirming the run.',
+    entry: {
+      id: 'adpl_translator-20260317-001',
+      type: 'acknowledgement',
+      from: 'adpl_translator',
+      to: 'harlie',
+      date: '2026-03-17',
+      status: 'noted',
+      content: 'Spec pull: no change (v1.1, SHA bf24be5). Generated 3 pipeline.adpl files: ag-ui-streaming-dashboard (L2), local-llm-inference-pipeline (L2), agent-context-database-pipeline (L4). All passed self-validation checklist.',
+      context: { spec_version: '1.1', spec_changed: false, projects_processed: ['ag-ui-streaming-dashboard', 'local-llm-inference-pipeline', 'agent-context-database-pipeline'] }
+    }
+  },
+  {
+    title: 'Pipeline Builder Maintainer: no action needed',
+    description: 'pb_maintainer reads the exchange and state.json — spec unchanged, no orders or recommendations addressed to it. It writes an observation confirming the pipeline builder is current.',
+    entry: {
+      id: 'pb_maintainer-20260317-001',
+      type: 'observation',
+      from: 'pb_maintainer',
+      to: 'harlie',
+      date: '2026-03-17',
+      status: 'noted',
+      content: 'ADPL spec unchanged (v1.1). codegen.js already emits adpl: "1.1". importGraph() accepts v1.0 and v1.1. No updates required this cycle.',
+      context: { spec_version: '1.1', action: 'none' }
     }
   },
   {
     title: 'Publisher closes the cycle',
-    description: 'Publisher reviews all changes, verifies the case study renders correctly, and commits. The updated exchange.json is included — making every agent decision a permanently queryable data artifact.',
+    description: 'Publisher validates all JSON files (136 templates, 49 tools, 3 valid pipeline.adpl), stages 16 changed files, and commits. exchange.json ships as a data artifact alongside the case study files.',
     entry: {
-      id: 'publisher-20260311-001',
+      id: 'publisher-20260317-001',
       type: 'observation',
       from: 'publisher',
       to: 'all',
-      date: '2026-03-11',
+      date: '2026-03-17',
       status: 'noted',
-      content: 'Committed and pushed: Case #014 (duckdb-lakehouse), updated exchange.json, updated market.json. Commit: feat(collective): DuckDB Lakehouse case study and market updates.',
-      context: { commit_type: 'feat(collective)', files_changed: 4, git_pushed: true }
+      content: 'Committed and pushed: commit 0694fa8 — "chore: Harlie Collective update [2026-03-17]". 16 files changed: 3 case studies, 3 pipeline.adpl, 3 templates added, 1 pulse entry, 2 new registry tools, exchange.json updated.',
+      context: { commit: '0694fa8', files_changed: 16, git_pushed: true, cases_added: ['019', '020', '021'], templates_total: 136, market_total: 49 }
     }
   }
 ];
@@ -479,6 +535,46 @@ function flash(id, msg) {
   }, 2000);
 }
 
+// ── Load H.A.R.L.I.E. exchange.json ──────────────────────────────
+function initLoadHarlie() {
+  const btn = document.getElementById('btn-load-harlie');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    btn.textContent = '⏳ Loading…';
+    btn.disabled = true;
+    fetch('../../agents/exchange.json')
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(data => {
+        const loaded = Array.isArray(data) ? data : (data.entries || []);
+        if (!loaded.length) throw new Error('No entries found');
+        entries = loaded;
+        scenarioStep = -1;
+        scenarioActive = false;
+        resetScenarioUI();
+        renderLog();
+        btn.textContent = '✅ H.A.R.L.I.E. Log Loaded';
+        btn.style.color = 'var(--c-acknowledgement)';
+        setTimeout(() => {
+          btn.textContent = '🌀 Load H.A.R.L.I.E. Log';
+          btn.style.color = '';
+          btn.disabled = false;
+        }, 3000);
+      })
+      .catch(err => {
+        btn.textContent = '❌ ' + err.message;
+        btn.style.color = 'var(--c-alert)';
+        setTimeout(() => {
+          btn.textContent = '🌀 Load H.A.R.L.I.E. Log';
+          btn.style.color = '';
+          btn.disabled = false;
+        }, 3000);
+      });
+  });
+}
+
 // ── Boot ──────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   renderLog();
@@ -488,6 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initClear();
   initScenario();
   initMobileTabs();
+  initLoadHarlie();
 
   // Default mobile tab = log
   const logTab = document.querySelector('.mobile-tab[data-tab="log"]');

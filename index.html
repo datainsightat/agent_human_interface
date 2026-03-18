@@ -34,14 +34,16 @@
   <div class="intro-inner">
     <span class="intro-tag">Concept</span>
     <div class="intro-text">
-      <h2>The shared log between agents and humans</h2>
+      <h2>H.A.R.L.I.E. — the shared log between agents and humans</h2>
       <p>
+        The H.A.R.L.I.E. Collective uses <strong>AHIL</strong> as its coordination protocol.
         Agents write <strong>observations, recommendations, and alerts</strong> upward (↑).
         Humans write <strong>orders, approvals, and overrides</strong> downward (↓).
         Every entry is typed, schema-enforced, and append-only — so nothing can be silently rewritten.
-        Use the scenario below to watch a full cycle play out, or compose your own entries.
+        Load the live H.A.R.L.I.E. log, step through a real collective cycle, or compose your own entries.
       </p>
       <div class="intro-props">
+        <span class="intro-prop">🌀 H.A.R.L.I.E. Collective</span>
         <span class="intro-prop">📌 Append-only</span>
         <span class="intro-prop">🏷 Schema-enforced</span>
         <span class="intro-prop">🔍 Queryable audit trail</span>
@@ -75,10 +77,11 @@
           <label for="agent-role">Agent role</label>
           <select id="agent-role">
             <option value="scout">Scout</option>
-            <option value="market_watcher">Market Watcher</option>
-            <option value="project_architect">Project Architect</option>
             <option value="template_engineer">Template Engineer</option>
             <option value="pulse_writer">Pulse Writer</option>
+            <option value="project_architect">Project Architect</option>
+            <option value="adpl_translator">ADPL Translator</option>
+            <option value="pb_maintainer">Pipeline Builder Maintainer</option>
             <option value="publisher">Publisher</option>
             <option value="harlie">H.A.R.L.I.E.</option>
           </select>
@@ -109,14 +112,16 @@
         <div class="field">
           <label for="agent-to">To</label>
           <select id="agent-to">
-            <option value="project_architect">project_architect</option>
             <option value="all">all</option>
             <option value="human">human</option>
             <option value="scout">scout</option>
-            <option value="market_watcher">market_watcher</option>
-            <option value="pulse_writer">pulse_writer</option>
             <option value="template_engineer">template_engineer</option>
+            <option value="pulse_writer">pulse_writer</option>
+            <option value="project_architect">project_architect</option>
+            <option value="adpl_translator">adpl_translator</option>
+            <option value="pb_maintainer">pb_maintainer</option>
             <option value="publisher">publisher</option>
+            <option value="harlie">harlie</option>
           </select>
         </div>
 
@@ -144,6 +149,7 @@
         exchange.json
       </div>
       <div class="log-controls">
+        <button class="btn-clear" id="btn-load-harlie" title="Load the live H.A.R.L.I.E. exchange.json">🌀 Load H.A.R.L.I.E. Log</button>
         <select class="log-filter" id="log-filter">
           <option value="all">All types</option>
           <option value="observation">Observations</option>
@@ -194,13 +200,15 @@
         <div class="field">
           <label for="human-to">To</label>
           <select id="human-to">
-            <option value="project_architect">project_architect</option>
-            <option value="scout">scout</option>
-            <option value="market_watcher">market_watcher</option>
-            <option value="pulse_writer">pulse_writer</option>
-            <option value="template_engineer">template_engineer</option>
-            <option value="publisher">publisher</option>
             <option value="all">all</option>
+            <option value="scout">scout</option>
+            <option value="template_engineer">template_engineer</option>
+            <option value="pulse_writer">pulse_writer</option>
+            <option value="project_architect">project_architect</option>
+            <option value="adpl_translator">adpl_translator</option>
+            <option value="pb_maintainer">pb_maintainer</option>
+            <option value="publisher">publisher</option>
+            <option value="harlie">harlie</option>
           </select>
         </div>
 
@@ -243,7 +251,7 @@
     <div class="scenario-header">
       <div class="scenario-title-group">
         <span class="scenario-label">Guided Scenario</span>
-        <span class="scenario-title">DuckDB Lakehouse — a full cycle</span>
+        <span class="scenario-title">H.A.R.L.I.E. BitNet Cycle — 7 agents, one run</span>
       </div>
       <div class="scenario-controls">
         <button class="btn-scenario btn-scenario--play" id="btn-scenario-start">▶ Run Scenario</button>
@@ -258,7 +266,7 @@
 
     <div class="scenario-body">
       <div class="scenario-idle" id="scenario-idle">
-        Click <strong>Run Scenario</strong> to watch Scout, Market Watcher, a human, Project Architect, and Publisher coordinate a full cycle through the exchange layer.
+        Click <strong>Run Scenario</strong> to step through a real H.A.R.L.I.E. collective run — Scout discovers BitNet, three agents act in parallel, ADPL Translator generates pipeline files, and Publisher closes the cycle. Every message uses AHIL.
       </div>
 
       <div class="scenario-step-display" id="scenario-step-display">
@@ -272,7 +280,7 @@
       </div>
 
       <div class="scenario-complete" id="scenario-complete">
-        ✅ Cycle complete. Every action is now in the exchange log — queryable, traceable, permanent. The commit included <code>exchange.json</code> as a data artifact alongside the case study files.
+        ✅ Cycle complete. 9 AHIL entries, 7 agents, one run — Scout → [Template Engineer + Pulse Writer + Project Architect] → ADPL Translator → Pipeline Builder Maintainer → Publisher. Every action is queryable, traceable, and permanent. Click <strong>🌀 Load H.A.R.L.I.E. Log</strong> to see the real exchange from this run.
       </div>
     </div>
   </div>
